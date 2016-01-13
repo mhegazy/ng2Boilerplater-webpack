@@ -128,15 +128,15 @@ module.exports = (function makeWebpackConfig() {
         noParse: [/.+zone\.js\/dist\/.+/, /.+angular2\/bundles\/.+/, /angular2-polyfills\.js/]
     };
 
-    if (TEST) {
-        // instrument only testing sources with Istanbul, covers js compiled files for now :-/
-        config.module.postLoaders.push({
-            test: /\.(js|ts)$/,
-            include: path.resolve('src'),
-            loader: 'istanbul-instrumenter-loader',
-            exclude: [/\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/]
-        })
-    }
+    //if (TEST) {
+    //    // instrument only testing sources with Istanbul, covers js compiled files for now :-/
+    //    config.module.postLoaders.push({
+    //        test: /\.(js|ts)$/,
+    //        include: path.resolve('src'),
+    //        loader: 'istanbul-instrumenter-loader',
+    //        exclude: [/\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/]
+    //    })
+    //}
 
     /**
      * Plugins
@@ -213,12 +213,12 @@ module.exports = (function makeWebpackConfig() {
 
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
             // Minify all javascript, switch loaders to minimizing mode
-            new webpack.optimize.UglifyJsPlugin({
-                // disabled for beta.1 because it was breaking the build, todo: remove this once fixed
-                // reference: https://github.com/angular/angular/issues/6366
-                // reference: https://github.com/angular/angular/issues/6380
-                mangle: false
-            }),
+            //new webpack.optimize.UglifyJsPlugin({
+            //    // disabled for beta.1 because it was breaking the build, todo: remove this once fixed
+            //    // reference: https://github.com/angular/angular/issues/6366
+            //    // reference: https://github.com/angular/angular/issues/6380
+            //    mangle: false
+            //}),
 
             // Copy assets from the public folder
             // Reference: https://github.com/kevlened/copy-webpack-plugin
