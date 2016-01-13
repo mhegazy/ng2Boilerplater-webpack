@@ -11,10 +11,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (function makeWebpackConfig() {
-    /**
-     * Environment type
-     * BUILD is for generating minified builds
-     */
+
     var BUILD = args.indexOf('--webpack-build') !== -1 || process.env['webpack-build'];
     //var TEST = args.indexOf('--webpack-test') !== -1 || process.env['webpack-test'];
 
@@ -129,16 +126,6 @@ module.exports = (function makeWebpackConfig() {
         postLoaders: [],
         noParse: [/.+zone\.js\/dist\/.+/, /.+angular2\/bundles\/.+/, /angular2-polyfills\.js/]
     };
-
-    //if (TEST) {
-    //    // instrument only testing sources with Istanbul, covers js compiled files for now :-/
-    //    config.module.postLoaders.push({
-    //        test: /\.(js|ts)$/,
-    //        include: path.resolve('src'),
-    //        loader: 'istanbul-instrumenter-loader',
-    //        exclude: [/\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/]
-    //    })
-    //}
 
     /**
      * Plugins
