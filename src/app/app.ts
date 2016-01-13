@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
+import {HTTP_PROVIDERS, Http} from 'angular2/http';
 import {FORM_PROVIDERS} from 'angular2/common';
 
 import '../style/app.scss';
@@ -14,7 +15,7 @@ import {About} from "./components/about/about";
  */
 @Component({
     selector: 'app', // <app></app>
-    providers: [...FORM_PROVIDERS, Api],
+    providers: [...FORM_PROVIDERS, Api, HTTP_PROVIDERS],
     directives: [...ROUTER_DIRECTIVES],
     styles: [require('./app.scss')],
     template: require('./app.html')
@@ -26,8 +27,8 @@ import {About} from "./components/about/about";
 export class App {
     url: string = 'https://github.com/ocombe/ng2-webpack';
 
-    constructor(public api: Api) {
-        console.log('Hello 20' + api);
+    constructor(public api: Api, private http:Http) {
+        console.log('Hello 23' + api);
         //var userLang = navigator.language.split('-')[0]; // use navigator lang if available
         //userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
         //
