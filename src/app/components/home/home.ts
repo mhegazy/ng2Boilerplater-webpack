@@ -11,7 +11,8 @@ import {FORM_DIRECTIVES} from 'angular2/common';
 export class Home implements OnInit {
 
     constructor() {
-        var jQuery = require('jQuery');
+        console.log('started...');
+        //var jQuery = require('jQuery');
         //jQuery('body').fadeOut();
     }
 
