@@ -1,3 +1,5 @@
+///<reference path="../../typings/app.d.ts"/>
+
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {FORM_PROVIDERS} from 'angular2/common';
