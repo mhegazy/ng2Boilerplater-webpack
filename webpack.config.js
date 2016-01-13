@@ -56,7 +56,7 @@ module.exports = (function makeWebpackConfig() {
      */
     config.output = TEST ? {} : {
         path: root('dist'),
-        publicPath: '/',
+        publicPath: './',
         filename: 'js/[name].js',
         chunkFilename: BUILD ? '[id].chunk.js?[hash]' : '[id].chunk.js'
     };

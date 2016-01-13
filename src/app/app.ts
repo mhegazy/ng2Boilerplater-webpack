@@ -27,6 +27,7 @@ export class App {
     url: string = 'https://github.com/ocombe/ng2-webpack';
 
     constructor(public api: Api) {
+        console.log('Hello 20' + api);
         //var userLang = navigator.language.split('-')[0]; // use navigator lang if available
         //userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
         //
