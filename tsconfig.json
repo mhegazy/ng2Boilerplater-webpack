@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "ES5",
     "module": "commonjs",
+    "moduleResolution": "node",
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,11 +11,9 @@
   },
   "exclude": [
     "node_modules",
-    "/node_modules",
-    "./node_modules",
-    "node_modules*",
-    "node_modules/*",
-    "*node_modules"
+    "angular2",
+    "rxjs",
+    "typings"
   ],
   "compileOnSave": false,
   "buildOnSave": false

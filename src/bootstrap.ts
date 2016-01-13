@@ -3,7 +3,6 @@ require("bootstrap-webpack");
 
 import {bootstrap} from 'angular2/platform/browser';
 import {ROUTER_PROVIDERS} from 'angular2/router';
-import {HTTP_PROVIDERS} from 'angular2/http';
 // include for development builds
 import {ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/common_dom';
 // include for production builds
@@ -26,7 +25,6 @@ import {App} from './app/app';
 function main() {
     return bootstrap(App, [
         // These are dependencies of our App
-        HTTP_PROVIDERS,
         ROUTER_PROVIDERS,
         TranslateService, // this provider has been defined in bootstrap and will be the same for all components
         ELEMENT_PROBE_PROVIDERS // remove in production
