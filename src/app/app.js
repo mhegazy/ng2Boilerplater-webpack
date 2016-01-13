@@ -15,16 +15,18 @@ require('../style/app.scss');
 var api_1 = require('./services/api/api');
 var home_1 = require('./components/home/home');
 var about_1 = require("./components/about/about");
+var CommBroker_1 = require("./services/CommBroker");
 var App = (function () {
-    function App(api) {
+    function App(api, commBroker) {
         this.api = api;
+        this.commBroker = commBroker;
         this.url = 'https://github.com/ocombe/ng2-webpack';
         console.log('Hello 23' + api);
     }
     App = __decorate([
         core_1.Component({
             selector: 'app',
-            providers: common_1.FORM_PROVIDERS.concat([api_1.Api, http_1.HTTP_PROVIDERS]),
+            providers: common_1.FORM_PROVIDERS.concat([api_1.Api, http_1.HTTP_PROVIDERS, CommBroker_1.CommBroker]),
             directives: router_1.ROUTER_DIRECTIVES.slice(),
             styles: [require('./app.scss')],
             template: require('./app.html')
@@ -33,7 +35,7 @@ var App = (function () {
             { path: '/', component: home_1.Home, name: 'Home' },
             { path: '/About', component: about_1.About, name: 'About' }
         ]), 
-        __metadata('design:paramtypes', [api_1.Api])
+        __metadata('design:paramtypes', [api_1.Api, CommBroker_1.CommBroker])
     ], App);
     return App;
 })();

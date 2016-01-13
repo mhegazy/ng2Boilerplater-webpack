@@ -10,6 +10,7 @@ import '../style/app.scss';
 import {Api} from './services/api/api';
 import {Home} from './components/home/home';
 import {About} from "./components/about/about";
+import {CommBroker} from "./services/CommBroker";
 
 /*
  * App Component
@@ -17,7 +18,7 @@ import {About} from "./components/about/about";
  */
 @Component({
     selector: 'app', // <app></app>
-    providers: [...FORM_PROVIDERS, Api, HTTP_PROVIDERS],
+    providers: [...FORM_PROVIDERS, Api, HTTP_PROVIDERS, CommBroker],
     directives: [...ROUTER_DIRECTIVES],
     styles: [require('./app.scss')],
     template: require('./app.html')
@@ -29,7 +30,7 @@ import {About} from "./components/about/about";
 export class App {
     url: string = 'https://github.com/ocombe/ng2-webpack';
 
-    constructor(public api: Api) {
+    constructor(public api: Api, private commBroker:CommBroker) {
         console.log('Hello 23' + api);
         //var userLang = navigator.language.split('-')[0]; // use navigator lang if available
         //userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
