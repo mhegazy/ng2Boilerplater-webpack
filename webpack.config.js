@@ -31,10 +31,13 @@ module.exports = (function makeWebpackConfig() {
      * Type of sourcemap to use per build type
      */
     if (TEST) {
+        console.log('TEST!!!!!');
         config.devtool = 'inline-source-map';
     } else if (BUILD) {
+        console.log('BUILD!!!!!');
         config.devtool = 'source-map';
     } else {
+        console.log('OTHER!!!!!');
         config.devtool = 'eval-source-map';
     }
 
@@ -161,6 +164,11 @@ module.exports = (function makeWebpackConfig() {
                 filename: 'js/[name].js',
                 minChunks: 2,
                 chunks: ['app', 'vendor']
+            }),
+
+            new webpack.ProvidePlugin({
+                jQuery: "jquery",
+                "window.jQuery": "jquery"
             }),
 
             // Inject paths into html files

@@ -11,6 +11,7 @@ var core_1 = require('angular2/core');
 var common_1 = require('angular2/common');
 var Home = (function () {
     function Home() {
+        var jQuery = require('jQuery');
     }
     Home.prototype.ngOnInit = function () {
         console.log('Hello Home');
