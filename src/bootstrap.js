@@ -1,4 +1,4 @@
-require('jQuery');
+require("bootstrap-webpack");
 var browser_1 = require('angular2/platform/browser');
 var router_1 = require('angular2/router');
 var http_1 = require('angular2/http');
