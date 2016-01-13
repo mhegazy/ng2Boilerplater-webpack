@@ -10,14 +10,16 @@
 // <reference pathn="../typings/angular-protractor/angular-protractor.d.ts"/>
 // <reference path="../typings/node/node.d.ts" />
 
-//<reference path="../typings/es6-shim/es6-shim.d.ts" />
-//<reference path="../typings/zone.js/zone.js.d.ts"/>
+///<reference path="../typings/webpack/webpack.d.ts" />
+///<reference path="../typings/es6-shim/es6-shim.d.ts" />
+///<reference path="../typings/zone.js/zone.js.d.ts"/>
 ///<reference path="../typings/jquery/jquery.d.ts" />
 ///<reference path="../typings/systemjs/systemjs.d.ts" />
 ///<reference path="../typings/bootbox/bootbox.d.ts" />
 ///<reference path="../typings/lodash/lodash.d.ts" />
 
 declare var assert: any;
+declare var require: any;
 
 
 interface BrowserNodeGlobal {
