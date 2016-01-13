@@ -1,6 +1,9 @@
 // component styles are encapsulated and only applied to their components
+
+$primary-color: #ff2ba9;
+
 * {
-    color: #5ebfff;
+    color: $primary-color;
 }
 
 
