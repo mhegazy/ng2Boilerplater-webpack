@@ -1,10 +1,9 @@
 import {Component, OnInit} from 'angular2/core';
 import {FORM_DIRECTIVES} from 'angular2/common';
-import {HTTP_PROVIDERS} from 'angular2/http';
 
 @Component({
     selector: 'home',
-    directives: [...FORM_DIRECTIVES, HTTP_PROVIDERS],
+    directives: [...FORM_DIRECTIVES],
     pipes: [],
     styles: [require('./home.scss')],
     template: require('./home.html')
