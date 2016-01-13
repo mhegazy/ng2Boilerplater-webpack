@@ -16,7 +16,7 @@ module.exports = (function makeWebpackConfig() {
      * BUILD is for generating minified builds
      */
     var BUILD = args.indexOf('--webpack-build') !== -1 || process.env['webpack-build'];
-    var TEST = args.indexOf('--webpack-test') !== -1 || process.env['webpack-test'];
+    //var TEST = args.indexOf('--webpack-test') !== -1 || process.env['webpack-test'];
 
     /**
      * Config
@@ -30,25 +30,16 @@ module.exports = (function makeWebpackConfig() {
      * Reference: http://webpack.github.io/docs/configuration.html#devtool
      * Type of sourcemap to use per build type
      */
-    if (TEST) {
-        console.log('TEST!!!!!');
-        config.devtool = 'inline-source-map';
-    } else if (BUILD) {
-        console.log('BUILD!!!!!');
-        config.devtool = 'source-map';
-    } else {
-        console.log('OTHER!!!!!');
-        config.devtool = 'eval-source-map';
-    }
 
-    // add debug messages
-    config.debug = !BUILD || !TEST;
+    config.devtool = 'source-map';
+    //config.devtool = 'inline-source-map';
+    // config.devtool = 'eval-source-map';
 
     /**
      * Entry
      * Reference: http://webpack.github.io/docs/configuration.html#entry
      */
-    config.entry = TEST ? {} : {
+    config.entry = {
         'vendor': './src/vendor.ts',
         'app': './src/bootstrap.ts' // our angular app
     };
@@ -57,11 +48,11 @@ module.exports = (function makeWebpackConfig() {
      * Output
      * Reference: http://webpack.github.io/docs/configuration.html#output
      */
-    config.output = TEST ? {} : {
+    config.output = {
         path: root('dist'),
         publicPath: './',
         filename: 'js/[name].js',
-        chunkFilename: BUILD ? '[id].chunk.js?[hash]' : '[id].chunk.js'
+        chunkFilename: '[id].chunk.js?[hash]'
     };
 
     /**
@@ -69,7 +60,7 @@ module.exports = (function makeWebpackConfig() {
      * Reference: http://webpack.github.io/docs/configuration.html#resolve
      */
     config.resolve = {
-        cache: !TEST,
+        cache: true,
         root: root(),
         // only discover files that have those extensions
         extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html'],
@@ -86,7 +77,7 @@ module.exports = (function makeWebpackConfig() {
      * This handles most of the magic responsible for converting modules
      */
     config.module = {
-        preLoaders: TEST ? [] : [{test: /\.ts$/, loader: 'tslint'}],
+        preLoaders: [{test: /\.ts$/, loader: 'tslint'}],
         loaders: [
             // Support for .ts files.
             {
@@ -100,7 +91,7 @@ module.exports = (function makeWebpackConfig() {
                         2375  // 2375 -> Duplicate string index signature
                     ]
                 },
-                exclude: [TEST ? /\.(e2e)\.ts$/ : /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/]
+                exclude: [/\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/]
             },
 
             // copy those assets to output
@@ -112,14 +103,22 @@ module.exports = (function makeWebpackConfig() {
             // Support for CSS as raw text
             // use 'null' loader in test mode (https://github.com/webpack/null-loader)
             // all css in src/style will be bundled in an external css file
-            {test: /\.css$/, exclude: root('src','app'), loader: TEST ? 'null' : ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')},
+            {
+                test: /\.css$/,
+                exclude: root('src', 'app'),
+                loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+            },
             // all css required in src/app files will be merged in js files
             {test: /\.css$/, exclude: root('src', 'style'), loader: 'raw!postcss'},
 
             // support for .scss files
             // use 'null' loader in test mode (https://github.com/webpack/null-loader)
             // all css in src/style will be bundled in an external css file
-            {test: /\.scss$/, exclude: root('src', 'app'), loader: TEST ? 'null' : ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass')},
+            {
+                test: /\.scss$/,
+                exclude: root('src', 'app'),
+                loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass')
+            },
             // all css required in src/app files will be merged in js files
             {test: /\.scss$/, exclude: root('src', 'style'), loader: 'raw!postcss!sass'},
 
@@ -147,94 +146,89 @@ module.exports = (function makeWebpackConfig() {
      * List: http://webpack.github.io/docs/list-of-plugins.html
      */
     config.plugins = [];
+    config.plugins.push(
+        // Generate common chunks if necessary
+        // Reference: https://webpack.github.io/docs/code-splitting.html
+        // Reference: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
+        new CommonsChunkPlugin({
+            name: 'vendor',
+            filename: 'js/[name].js',
+            minChunks: Infinity
+        }),
+        new CommonsChunkPlugin({
+            name: 'common',
+            filename: 'js/[name].js',
+            minChunks: 2,
+            chunks: ['app', 'vendor']
+        }),
 
+        new webpack.ProvidePlugin({
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
 
-    if(!TEST) {
-        config.plugins.push(
-            // Generate common chunks if necessary
-            // Reference: https://webpack.github.io/docs/code-splitting.html
-            // Reference: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
-            new CommonsChunkPlugin({
-                name: 'vendor',
-                filename: 'js/[name].js',
-                minChunks: Infinity
-            }),
-            new CommonsChunkPlugin({
-                name: 'common',
-                filename: 'js/[name].js',
-                minChunks: 2,
-                chunks: ['app', 'vendor']
-            }),
-
-            new webpack.ProvidePlugin({
-                jQuery: "jquery",
-                "window.jQuery": "jquery"
-            }),
-
-            // Inject paths into html files
-            // Reference: https://github.com/ampedandwired/html-webpack-plugin
-            new HtmlWebpackPlugin({
-                template: './src/public/index.html',
-                inject: 'body',
-                hash: true, // inject ?hash at the end of the files
-                chunksSortMode: function compare(a, b) {
-                    // common always first
-                    if(a.names[0] === 'common') {
-                        return -1;
-                    }
-                    // app always last
-                    if(a.names[0] === 'app') {
-                        return 1;
-                    }
-                    // vendor before app
-                    if(a.names[0] === 'vendor' && b.names[0] === 'app') {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                    // a must be equal to b
-                    return 0;
+        // Inject paths into html files
+        // Reference: https://github.com/ampedandwired/html-webpack-plugin
+        new HtmlWebpackPlugin({
+            template: './src/public/index.html',
+            inject: 'body',
+            hash: true, // inject ?hash at the end of the files
+            chunksSortMode: function compare(a, b) {
+                // common always first
+                if (a.names[0] === 'common') {
+                    return -1;
                 }
-            }),
+                // app always last
+                if (a.names[0] === 'app') {
+                    return 1;
+                }
+                // vendor before app
+                if (a.names[0] === 'vendor' && b.names[0] === 'app') {
+                    return -1;
+                } else {
+                    return 1;
+                }
+                // a must be equal to b
+                return 0;
+            }
+        }),
 
-            // Extract css files
-            // Reference: https://github.com/webpack/extract-text-webpack-plugin
-            // Disabled when in test mode or not in build mode
-            new ExtractTextPlugin('css/[name].css', {disable: !BUILD || TEST})
-        );
-    }
+        // Extract css files
+        // Reference: https://github.com/webpack/extract-text-webpack-plugin
+        // Disabled when in test mode or not in build mode
+
+        new ExtractTextPlugin('css/[name].css', {disable: false})
+    );
 
     // Add build specific plugins
-    if(BUILD) {
-        config.plugins.push(
-            // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
-            // Only emit files when there are no errors
-            new webpack.NoErrorsPlugin(),
+    config.plugins.push(
+        // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
+        // Only emit files when there are no errors
+        new webpack.NoErrorsPlugin(),
 
-            // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
-            // Dedupe modules in the output
-            new webpack.optimize.DedupePlugin(),
+        // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
+        // Dedupe modules in the output
+        new webpack.optimize.DedupePlugin(),
 
-            // Reference: http://webpack.github.io/docs/list-of-plugins.html#occurenceorderplugin
-            // Assign the module and chunk ids by occurrence count.
-            new webpack.optimize.OccurenceOrderPlugin(),
+        // Reference: http://webpack.github.io/docs/list-of-plugins.html#occurenceorderplugin
+        // Assign the module and chunk ids by occurrence count.
+        new webpack.optimize.OccurenceOrderPlugin(),
 
-            // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
-            // Minify all javascript, switch loaders to minimizing mode
-            //new webpack.optimize.UglifyJsPlugin({
-            //    // disabled for beta.1 because it was breaking the build, todo: remove this once fixed
-            //    // reference: https://github.com/angular/angular/issues/6366
-            //    // reference: https://github.com/angular/angular/issues/6380
-            //    mangle: false
-            //}),
+        // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+        // Minify all javascript, switch loaders to minimizing mode
+        //new webpack.optimize.UglifyJsPlugin({
+        //    // disabled for beta.1 because it was breaking the build, todo: remove this once fixed
+        //    // reference: https://github.com/angular/angular/issues/6366
+        //    // reference: https://github.com/angular/angular/issues/6380
+        //    mangle: false
+        //}),
 
-            // Copy assets from the public folder
-            // Reference: https://github.com/kevlened/copy-webpack-plugin
-            new CopyWebpackPlugin([{
-                from: root('src/public')
-            }])
-        );
-    }
+        // Copy assets from the public folder
+        // Reference: https://github.com/kevlened/copy-webpack-plugin
+        new CopyWebpackPlugin([{
+            from: root('src/public')
+        }])
+    );
 
     /**
      * PostCSS
