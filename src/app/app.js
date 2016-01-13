@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
 var common_1 = require('angular2/common');
+var http_1 = require('angular2/http');
 require('../style/app.scss');
 var api_1 = require('./services/api/api');
 var home_1 = require('./components/home/home');
@@ -23,7 +24,7 @@ var App = (function () {
     App = __decorate([
         core_1.Component({
             selector: 'app',
-            providers: common_1.FORM_PROVIDERS.concat([api_1.Api]),
+            providers: common_1.FORM_PROVIDERS.concat([api_1.Api, http_1.HTTP_PROVIDERS]),
             directives: router_1.ROUTER_DIRECTIVES.slice(),
             styles: [require('./app.scss')],
             template: require('./app.html')

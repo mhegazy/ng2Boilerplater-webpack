@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var common_1 = require('angular2/common');
+var http_1 = require('angular2/http');
 var Home = (function () {
     function Home() {
         console.log('started...');
@@ -19,7 +20,7 @@ var Home = (function () {
     Home = __decorate([
         core_1.Component({
             selector: 'home',
-            directives: common_1.FORM_DIRECTIVES.slice(),
+            directives: common_1.FORM_DIRECTIVES.concat([http_1.HTTP_PROVIDERS]),
             pipes: [],
             styles: [require('./home.scss')],
             template: require('./home.html')

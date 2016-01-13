@@ -3,6 +3,7 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {FORM_PROVIDERS} from 'angular2/common';
+import {HTTP_PROVIDERS} from 'angular2/http';
 
 import '../style/app.scss';
 
@@ -16,7 +17,7 @@ import {About} from "./components/about/about";
  */
 @Component({
     selector: 'app', // <app></app>
-    providers: [...FORM_PROVIDERS, Api],
+    providers: [...FORM_PROVIDERS, Api, HTTP_PROVIDERS],
     directives: [...ROUTER_DIRECTIVES],
     styles: [require('./app.scss')],
     template: require('./app.html')
