@@ -12,4 +12,5 @@ import 'angular2/http';
 import 'rxjs';
 
 // Other vendors for example jQuery or Lodash
-import "ng2-translate/ng2-translate";
+//import "ng2-translate/ng2-translate";
+require("ng2-translate/ng2-translate");

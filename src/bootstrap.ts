@@ -9,7 +9,8 @@ import {ELEMENT_PROBE_PROVIDERS} from 'angular2/platform/common_dom';
 // import {enableProdMode} from 'angular2/core';
 
 // Example of external lib
-import {TranslateService} from "ng2-translate/ng2-translate";
+//import {TranslateService} from "ng2-translate/ng2-translate";
+var TranslateService: any = require("ng2-translate/ng2-translate").TranslateService;
 
 /*
  * App Component
